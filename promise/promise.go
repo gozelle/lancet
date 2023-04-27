@@ -8,8 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-
-	"github.com/duke-git/lancet/v2/internal"
+	
+	"github.com/gozelle/lancet/internal"
 )
 
 // Promise represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
@@ -19,9 +19,9 @@ type Promise[T any] struct {
 	runnable func(resolve func(T), reject func(error))
 	result   T
 	err      error
-
+	
 	pending bool
-
+	
 	mu *sync.Mutex
 	wg *sync.WaitGroup
 }
@@ -31,33 +31,33 @@ func New[T any](runnable func(resolve func(T), reject func(error))) *Promise[T] 
 	if runnable == nil {
 		panic("runnable function should not be nil")
 	}
-
+	
 	p := &Promise[T]{
 		runnable: runnable,
 		pending:  true,
 		mu:       &sync.Mutex{},
 		wg:       &sync.WaitGroup{},
 	}
-
+	
 	defer p.run()
-
+	
 	return p
 }
 
 func (p *Promise[T]) run() {
 	p.wg.Add(1)
-
+	
 	go func() {
 		defer func() {
 			if !p.pending {
 				return
 			}
-
+			
 			if err := recover(); err != nil {
 				p.reject(errors.New(fmt.Sprint(err)))
 			}
 		}()
-
+		
 		p.runnable(p.resolve, p.reject)
 	}()
 }
@@ -75,14 +75,14 @@ func Resolve[T any](resolution T) *Promise[T] {
 func (p *Promise[T]) resolve(value T) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-
+	
 	if !p.pending {
 		return
 	}
-
+	
 	p.result = value
 	p.pending = false
-
+	
 	p.wg.Done()
 }
 
@@ -99,14 +99,14 @@ func Reject[T any](err error) *Promise[T] {
 func (p *Promise[T]) reject(err error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-
+	
 	if !p.pending {
 		return
 	}
-
+	
 	p.err = err
 	p.pending = false
-
+	
 	p.wg.Done()
 }
 
@@ -174,11 +174,11 @@ func All[T any](promises []*Promise[T]) *Promise[[]T] {
 	if len(promises) == 0 {
 		return nil
 	}
-
+	
 	return New(func(resolve func([]T), reject func(error)) {
 		valsChan := make(chan tuple[T, int], len(promises))
 		errsChan := make(chan error, 1)
-
+		
 		for idx, p := range promises {
 			idx := idx
 			_ = Then(p, func(data T) T {
@@ -190,7 +190,7 @@ func All[T any](promises []*Promise[T]) *Promise[[]T] {
 				return err
 			})
 		}
-
+		
 		resolutions := make([]T, len(promises))
 		for idx := 0; idx < len(promises); idx++ {
 			select {
@@ -210,11 +210,11 @@ func Race[T any](promises []*Promise[T]) *Promise[T] {
 	if len(promises) == 0 {
 		return nil
 	}
-
+	
 	return New(func(resolve func(T), reject func(error)) {
 		valsChan := make(chan T, 1)
 		errsChan := make(chan error, 1)
-
+		
 		for _, p := range promises {
 			_ = Then(p, func(data T) T {
 				valsChan <- data
@@ -225,7 +225,7 @@ func Race[T any](promises []*Promise[T]) *Promise[T] {
 				return err
 			})
 		}
-
+		
 		select {
 		case val := <-valsChan:
 			resolve(val)
@@ -241,11 +241,11 @@ func Any[T any](promises []*Promise[T]) *Promise[T] {
 	if len(promises) == 0 {
 		return nil
 	}
-
+	
 	return New(func(resolve func(T), reject func(error)) {
 		valsChan := make(chan T, 1)
 		errsChan := make(chan tuple[error, int], len(promises))
-
+		
 		for idx, p := range promises {
 			idx := idx
 			_ = Then(p, func(data T) T {
@@ -257,7 +257,7 @@ func Any[T any](promises []*Promise[T]) *Promise[T] {
 				return err
 			})
 		}
-
+		
 		errs := make([]error, len(promises))
 		for idx := 0; idx < len(promises); idx++ {
 			select {
@@ -268,12 +268,12 @@ func Any[T any](promises []*Promise[T]) *Promise[T] {
 				errs[err._2] = err._1
 			}
 		}
-
+		
 		errCombo := errs[0]
 		for _, err := range errs[1:] {
 			errCombo = internal.JoinError(err)
 		}
-
+		
 		reject(errCombo)
 	})
 }

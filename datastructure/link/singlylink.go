@@ -3,8 +3,8 @@ package datastructure
 import (
 	"fmt"
 	"reflect"
-
-	"github.com/duke-git/lancet/v2/datastructure"
+	
+	"github.com/gozelle/lancet/datastructure"
 )
 
 // SinglyLink is a linked list. Whose node has a Value generics and Next pointer points to a next node of the sl.
@@ -33,15 +33,15 @@ func (sl *SinglyLink[T]) InsertAtTail(value T) {
 		sl.InsertAtHead(value)
 		return
 	}
-
+	
 	for current.Next != nil {
 		current = current.Next
 	}
-
+	
 	newNode := datastructure.NewLinkNode(value)
 	newNode.Next = nil
 	current.Next = newNode
-
+	
 	sl.length++
 }
 
@@ -52,20 +52,20 @@ func (sl *SinglyLink[T]) InsertAt(index int, value T) {
 	if index < 0 || index > size {
 		return
 	}
-
+	
 	if index == 0 {
 		sl.InsertAtHead(value)
 		return
 	}
-
+	
 	if index == size {
 		sl.InsertAtTail(value)
 		return
 	}
-
+	
 	i := 0
 	current := sl.Head
-
+	
 	for current != nil {
 		if i == index-1 {
 			newNode := datastructure.NewLinkNode(value)
@@ -84,7 +84,7 @@ func (sl *SinglyLink[T]) DeleteAtHead() {
 	if sl.Head == nil {
 		return
 	}
-
+	
 	current := sl.Head
 	sl.Head = current.Next
 	sl.length--
@@ -95,16 +95,16 @@ func (sl *SinglyLink[T]) DeleteAtTail() {
 	if sl.Head == nil {
 		return
 	}
-
+	
 	current := sl.Head
 	if current.Next == nil {
 		sl.DeleteAtHead()
 	}
-
+	
 	for current.Next.Next != nil {
 		current = current.Next
 	}
-
+	
 	current.Next = nil
 	sl.length--
 }
@@ -119,15 +119,15 @@ func (sl *SinglyLink[T]) DeleteAt(index int) {
 	if current.Next == nil || index == 0 {
 		sl.DeleteAtHead()
 	}
-
+	
 	if index == sl.length-1 {
 		sl.DeleteAtTail()
 	}
-
+	
 	if index < 0 || index > sl.length-1 {
 		return
 	}
-
+	
 	i := 0
 	for current != nil {
 		if i == index-1 {
@@ -148,7 +148,7 @@ func (sl *SinglyLink[T]) DeleteValue(value T) {
 	dummyHead := datastructure.NewLinkNode(value)
 	dummyHead.Next = sl.Head
 	current := dummyHead
-
+	
 	for current.Next != nil {
 		if reflect.DeepEqual(current.Next.Value, value) {
 			current.Next = current.Next.Next
@@ -157,23 +157,23 @@ func (sl *SinglyLink[T]) DeleteValue(value T) {
 			current = current.Next
 		}
 	}
-
+	
 	sl.Head = dummyHead.Next
 }
 
 // Reverse the linked list
 func (sl *SinglyLink[T]) Reverse() {
 	var pre, next *datastructure.LinkNode[T]
-
+	
 	current := sl.Head
-
+	
 	for current != nil {
 		next = current.Next
 		current.Next = pre
 		pre = current
 		current = next
 	}
-
+	
 	sl.Head = pre
 }
 
@@ -187,10 +187,10 @@ func (sl *SinglyLink[T]) GetMiddleNode() *datastructure.LinkNode[T] {
 	}
 	fast := sl.Head
 	slow := sl.Head
-
+	
 	for fast != nil {
 		fast = fast.Next
-
+		
 		if fast != nil {
 			fast = fast.Next
 			slow = slow.Next

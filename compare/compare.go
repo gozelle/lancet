@@ -8,8 +8,8 @@ package compare
 import (
 	"reflect"
 	"time"
-
-	"github.com/duke-git/lancet/v2/convertor"
+	
+	"github.com/gozelle/lancet/convertor"
 )
 
 // operator type

@@ -8,10 +8,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-
-	"github.com/duke-git/lancet/v2/convertor"
-	"github.com/duke-git/lancet/v2/strutil"
-	"github.com/duke-git/lancet/v2/validator"
+	
+	"github.com/gozelle/lancet/convertor"
+	"github.com/gozelle/lancet/strutil"
+	"github.com/gozelle/lancet/validator"
 	"golang.org/x/exp/constraints"
 )
 
@@ -27,7 +27,7 @@ func Comma[T constraints.Float | constraints.Integer | string](value T, symbol s
 		}
 		return symbol + commaInt(v)
 	}
-
+	
 	if validator.IsFloat(value) {
 		v, err := convertor.ToFloat(value)
 		if err != nil {
@@ -35,7 +35,7 @@ func Comma[T constraints.Float | constraints.Integer | string](value T, symbol s
 		}
 		return symbol + commaFloat(v)
 	}
-
+	
 	if strutil.IsString(value) {
 		v := fmt.Sprintf("%v", value)
 		if validator.IsNumberStr(v) {
@@ -43,7 +43,7 @@ func Comma[T constraints.Float | constraints.Integer | string](value T, symbol s
 		}
 		return ""
 	}
-
+	
 	return ""
 }
 
@@ -59,10 +59,10 @@ func Pretty(v any) (string, error) {
 func PrettyToWriter(v any, out io.Writer) error {
 	enc := json.NewEncoder(out)
 	enc.SetIndent("", "    ")
-
+	
 	if err := enc.Encode(v); err != nil {
 		return err
 	}
-
+	
 	return nil
 }

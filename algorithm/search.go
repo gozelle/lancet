@@ -4,7 +4,7 @@
 // Package algorithm contain some basic algorithm functions. eg. sort, search, list, linklist, stack, queue, tree, graph.
 package algorithm
 
-import "github.com/duke-git/lancet/v2/lancetconstraints"
+import "github.com/gozelle/lancet/lancetconstraints"
 
 // Search algorithms see https://github.com/TheAlgorithms/Go/tree/master/search
 
@@ -27,17 +27,17 @@ func BinarySearch[T any](sortedSlice []T, target T, lowIndex, highIndex int, com
 	if highIndex < lowIndex || len(sortedSlice) == 0 {
 		return -1
 	}
-
+	
 	midIndex := int(lowIndex + (highIndex-lowIndex)/2)
 	isMidValGreatTarget := comparator.Compare(sortedSlice[midIndex], target) == 1
 	isMidValLessTarget := comparator.Compare(sortedSlice[midIndex], target) == -1
-
+	
 	if isMidValGreatTarget {
 		return BinarySearch(sortedSlice, target, lowIndex, midIndex-1, comparator)
 	} else if isMidValLessTarget {
 		return BinarySearch(sortedSlice, target, midIndex+1, highIndex, comparator)
 	}
-
+	
 	return midIndex
 }
 
@@ -47,13 +47,13 @@ func BinarySearch[T any](sortedSlice []T, target T, lowIndex, highIndex int, com
 func BinaryIterativeSearch[T any](sortedSlice []T, target T, lowIndex, highIndex int, comparator lancetconstraints.Comparator) int {
 	startIndex := lowIndex
 	endIndex := highIndex
-
+	
 	var midIndex int
 	for startIndex <= endIndex {
 		midIndex = int(startIndex + (endIndex-startIndex)/2)
 		isMidValGreatTarget := comparator.Compare(sortedSlice[midIndex], target) == 1
 		isMidValLessTarget := comparator.Compare(sortedSlice[midIndex], target) == -1
-
+		
 		if isMidValGreatTarget {
 			endIndex = midIndex - 1
 		} else if isMidValLessTarget {

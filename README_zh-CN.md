@@ -5,8 +5,8 @@
 
 ![Go version](https://img.shields.io/badge/go-%3E%3Dv1.18-9cf)
 [![Release](https://img.shields.io/badge/release-2.1.20-green.svg)](https://github.com/duke-git/lancet/releases)
-[![GoDoc](https://godoc.org/github.com/duke-git/lancet/v2?status.svg)](https://pkg.go.dev/github.com/duke-git/lancet/v2)
-[![Go Report Card](https://goreportcard.com/badge/github.com/duke-git/lancet/v2)](https://goreportcard.com/report/github.com/duke-git/lancet/v2)
+[![GoDoc](https://godoc.org/github.com/gozelle/lancet?status.svg)](https://pkg.go.dev/github.com/gozelle/lancet)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gozelle/lancet)](https://goreportcard.com/report/github.com/gozelle/lancet)
 [![test](https://github.com/duke-git/lancet/actions/workflows/codecov.yml/badge.svg?branch=main&event=push)](https://github.com/duke-git/lancet/actions/workflows/codecov.yml)
 [![codecov](https://codecov.io/gh/duke-git/lancet/branch/main/graph/badge.svg?token=FC48T1F078)](https://codecov.io/gh/duke-git/lancet)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/duke-git/lancet/blob/main/LICENSE)
@@ -34,7 +34,7 @@
 1. <b>使用 go1.18 及以上版本的用户，建议安装 v2.x.x。 因为 v2.x.x 应用 go1.18 的泛型重写了大部分函数。</b>
 
 ```go
-go get github.com/duke-git/lancet/v2 //安装v2最新版本v2.x.x
+go get github.com/gozelle/lancet //安装v2最新版本v2.x.x
 ```
 
 2. <b>使用 go1.18 以下版本的用户，必须安装 v1.x.x。目前最新的 v1 版本是 v1.3.7。</b>
@@ -48,7 +48,7 @@ go get github.com/duke-git/lancet// 使用go1.18以下版本, 必须安装v1.x.x
 lancet 是以包的结构组织代码的，使用时需要导入相应的包名。例如：如果使用字符串相关函数，需要导入 strutil 包:
 
 ```go
-import "github.com/duke-git/lancet/v2/strutil"
+import "github.com/gozelle/lancet/strutil"
 ```
 
 ## 示例
@@ -60,7 +60,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/strutil"
+    "github.com/gozelle/lancet/strutil"
 )
 
 func main() {
@@ -75,7 +75,7 @@ func main() {
 ### 1. algorithm 包实现一些基本查找和排序算法。
 
 ```go
-import "github.com/duke-git/lancet/v2/algorithm"
+import "github.com/gozelle/lancet/algorithm"
 ```
 
 #### Function list:
@@ -120,7 +120,7 @@ import "github.com/duke-git/lancet/v2/algorithm"
 ### 2. compare 包提供几个轻量级的类型比较函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/compare"
+import "github.com/gozelle/lancet/compare"
 ```
 
 #### Function list:
@@ -141,7 +141,7 @@ import "github.com/duke-git/lancet/v2/compare"
 ### 3. concurrency 包含一些支持并发编程的功能。例如：goroutine, channel, async 等。
 
 ```go
-import "github.com/duke-git/lancet/v2/concurrency"
+import "github.com/gozelle/lancet/concurrency"
 ```
 
 #### Function list:
@@ -180,7 +180,7 @@ import "github.com/duke-git/lancet/v2/concurrency"
 ### 4. condition 包含一些用于条件判断的函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/condition"
+import "github.com/gozelle/lancet/condition"
 ```
 
 #### Function list:
@@ -213,7 +213,7 @@ import "github.com/duke-git/lancet/v2/condition"
 ### 5. convertor 转换器包支持一些常见的数据类型转换。
 
 ```go
-import "github.com/duke-git/lancet/v2/convertor"
+import "github.com/gozelle/lancet/convertor"
 ```
 
 #### 函数列表:
@@ -276,7 +276,7 @@ import "github.com/duke-git/lancet/v2/convertor"
 ### 6. cryptor 加密包支持数据加密和解密，获取 md5，hash 值。支持 base64, md5, hmac, aes, des, rsa。
 
 ```go
-import "github.com/duke-git/lancet/v2/cryptor"
+import "github.com/gozelle/lancet/cryptor"
 ```
 
 #### 函数列表:
@@ -380,7 +380,7 @@ import "github.com/duke-git/lancet/v2/cryptor"
 ### 7. datetime 日期时间处理包，格式化日期，比较日期。
 
 ```go
-import "github.com/duke-git/lancet/v2/datetime"
+import "github.com/gozelle/lancet/datetime"
 ```
 
 #### 函数列表:
@@ -479,14 +479,14 @@ import "github.com/duke-git/lancet/v2/datetime"
 ### 8. datastructure 包含一些普通的数据结构实现。例如：list, linklist, stack, queue, set, tree, graph.
 
 ```go
-import list "github.com/duke-git/lancet/v2/datastructure/list"
-import link "github.com/duke-git/lancet/v2/datastructure/link"
-import stack "github.com/duke-git/lancet/v2/datastructure/stack"
-import queue "github.com/duke-git/lancet/v2/datastructure/queue"
-import set "github.com/duke-git/lancet/v2/datastructure/set"
-import tree "github.com/duke-git/lancet/v2/datastructure/tree"
-import heap "github.com/duke-git/lancet/v2/datastructure/heap"
-import hashmap "github.com/duke-git/lancet/v2/datastructure/hashmap"
+import list "github.com/gozelle/lancet/datastructure/list"
+import link "github.com/gozelle/lancet/datastructure/link"
+import stack "github.com/gozelle/lancet/datastructure/stack"
+import queue "github.com/gozelle/lancet/datastructure/queue"
+import set "github.com/gozelle/lancet/datastructure/set"
+import tree "github.com/gozelle/lancet/datastructure/tree"
+import heap "github.com/gozelle/lancet/datastructure/heap"
+import hashmap "github.com/gozelle/lancet/datastructure/hashmap"
 ```
 
 #### Function list:
@@ -511,7 +511,7 @@ import hashmap "github.com/duke-git/lancet/v2/datastructure/hashmap"
 ### 9. fileutil 包含文件基本操作。
 
 ```go
-import "github.com/duke-git/lancet/v2/fileutil"
+import "github.com/gozelle/lancet/fileutil"
 ```
 
 #### 函数列表：
@@ -578,7 +578,7 @@ import "github.com/duke-git/lancet/v2/fileutil"
 ### 10. formatter 格式化器包含一些数据格式化处理方法。
 
 ```go
-import "github.com/duke-git/lancet/v2/formatter"
+import "github.com/gozelle/lancet/formatter"
 ```
 
 #### 函数列表:
@@ -608,7 +608,7 @@ import "github.com/duke-git/lancet/v2/formatter"
 ### 11. function 函数包控制函数执行流程，包含部分函数式编程。
 
 ```go
-import "github.com/duke-git/lancet/v2/function"
+import "github.com/gozelle/lancet/function"
 ```
 
 #### 函数列表:
@@ -644,7 +644,7 @@ import "github.com/duke-git/lancet/v2/function"
 ### 12. maputil 包括一些操作 map 的函数.
 
 ```go
-import "github.com/duke-git/lancet/v2/maputil"
+import "github.com/gozelle/lancet/maputil"
 ```
 
 #### 函数列表:
@@ -716,7 +716,7 @@ import "github.com/duke-git/lancet/v2/maputil"
 ### 13. mathutil 包实现了一些数学计算的函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/mathutil"
+import "github.com/gozelle/lancet/mathutil"
 ```
 
 #### Function list:
@@ -779,7 +779,7 @@ import "github.com/duke-git/lancet/v2/mathutil"
 ### 14. netutil 网络包支持获取 ip 地址，发送 http 请求。
 
 ```go
-import "github.com/duke-git/lancet/v2/netutil"
+import "github.com/gozelle/lancet/netutil"
 ```
 
 #### 函数列表:
@@ -850,7 +850,7 @@ import "github.com/duke-git/lancet/v2/netutil"
 ### 15. random 随机数生成器包，可以生成随机[]bytes, int, string。
 
 ```go
-import "github.com/duke-git/lancet/v2/random"
+import "github.com/gozelle/lancet/random"
 ```
 
 #### 函数列表:
@@ -883,7 +883,7 @@ import "github.com/duke-git/lancet/v2/random"
 ### 16. retry 重试执行函数直到函数运行成功或被 context cancel。
 
 ```go
-import "github.com/duke-git/lancet/v2/retry"
+import "github.com/gozelle/lancet/retry"
 ```
 
 #### 函数列表:
@@ -907,7 +907,7 @@ import "github.com/duke-git/lancet/v2/retry"
 ### 17. slice 包含操作切片的方法集合。
 
 ```go
-import "github.com/duke-git/lancet/v2/slice"
+import "github.com/gozelle/lancet/slice"
 ```
 
 #### 函数列表:
@@ -1118,7 +1118,7 @@ import "github.com/duke-git/lancet/v2/slice"
 ### 18. Stream 流，该包仅验证简单的 stream 实现，功能有限。
 
 ```go
-import "github.com/duke-git/lancet/v2/stream"
+import "github.com/gozelle/lancet/stream"
 ```
 
 #### Function list:
@@ -1202,7 +1202,7 @@ import "github.com/duke-git/lancet/v2/stream"
 ### 19. structs 提供操作 struct, tag, field 的相关函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/structs"
+import "github.com/gozelle/lancet/structs"
 ```
 
 #### Function list:
@@ -1237,7 +1237,7 @@ import "github.com/duke-git/lancet/v2/structs"
 ### 20. strutil 包含字符串处理的相关函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/strutil"
+import "github.com/gozelle/lancet/strutil"
 ```
 
 #### 函数列表:
@@ -1330,7 +1330,7 @@ import "github.com/duke-git/lancet/v2/strutil"
 ### 21. system 包含 os, runtime, shell command 的相关函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/system"
+import "github.com/gozelle/lancet/system"
 ```
 
 #### 函数列表:
@@ -1366,7 +1366,7 @@ import "github.com/duke-git/lancet/v2/system"
 ### 22. validator 验证器包，包含常用字符串格式验证函数。
 
 ```go
-import "github.com/duke-git/lancet/v2/validator"
+import "github.com/gozelle/lancet/validator"
 ```
 
 #### 函数列表:
@@ -1474,7 +1474,7 @@ import "github.com/duke-git/lancet/v2/validator"
 ### 23. xerror 包实现一些错误处理函数
 
 ```go
-import "github.com/duke-git/lancet/v2/xerror"
+import "github.com/gozelle/lancet/xerror"
 ```
 
 #### 函数列表:

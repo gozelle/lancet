@@ -2,8 +2,8 @@ package structs
 
 import (
 	"reflect"
-
-	"github.com/duke-git/lancet/v2/pointer"
+	
+	"github.com/gozelle/lancet/pointer"
 )
 
 // Field is abstract struct field for provide several high level functions
@@ -73,7 +73,7 @@ func (f *Field) mapValue(value any) any {
 	val := pointer.ExtractPointer(value)
 	v := reflect.ValueOf(val)
 	var ret any
-
+	
 	switch v.Kind() {
 	case reflect.Struct:
 		s := New(val)

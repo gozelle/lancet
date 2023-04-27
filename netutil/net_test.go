@@ -4,13 +4,13 @@ import (
 	"net"
 	"net/http"
 	"testing"
-
-	"github.com/duke-git/lancet/v2/internal"
+	
+	"github.com/gozelle/lancet/internal"
 )
 
 func TestGetInternalIp(t *testing.T) {
 	assert := internal.NewAssert(t, "TestGetInternalIp")
-
+	
 	internalIp := GetInternalIp()
 	ip := net.ParseIP(internalIp)
 	assert.IsNotNil(ip)
@@ -18,9 +18,9 @@ func TestGetInternalIp(t *testing.T) {
 
 func TestGetRequestPublicIp(t *testing.T) {
 	assert := internal.NewAssert(t, "TestGetPublicIpInfo")
-
+	
 	ip := "36.112.24.10"
-
+	
 	request := http.Request{
 		Method: "GET",
 		Header: http.Header{
@@ -29,7 +29,7 @@ func TestGetRequestPublicIp(t *testing.T) {
 	}
 	publicIp := GetRequestPublicIp(&request)
 	assert.Equal(publicIp, ip)
-
+	
 	request = http.Request{
 		Method: "GET",
 		Header: http.Header{
@@ -51,7 +51,7 @@ func TestGetRequestPublicIp(t *testing.T) {
 
 func TestIsPublicIP(t *testing.T) {
 	assert := internal.NewAssert(t, "TestIsPublicIP")
-
+	
 	ips := []net.IP{
 		net.ParseIP("127.0.0.1"),
 		net.ParseIP("192.168.0.1"),
@@ -59,9 +59,9 @@ func TestIsPublicIP(t *testing.T) {
 		net.ParseIP("172.20.16.1"),
 		net.ParseIP("36.112.24.10"),
 	}
-
+	
 	expected := []bool{false, false, false, false, true}
-
+	
 	for i := 0; i < len(ips); i++ {
 		actual := IsPublicIP(ips[i])
 		assert.Equal(expected[i], actual)
@@ -70,7 +70,7 @@ func TestIsPublicIP(t *testing.T) {
 
 func TestIsInternalIP(t *testing.T) {
 	assert := internal.NewAssert(t, "TestIsInternalIP")
-
+	
 	ips := []net.IP{
 		net.ParseIP("127.0.0.1"),
 		net.ParseIP("192.168.0.1"),
@@ -78,9 +78,9 @@ func TestIsInternalIP(t *testing.T) {
 		net.ParseIP("172.20.16.1"),
 		net.ParseIP("36.112.24.10"),
 	}
-
+	
 	expected := []bool{true, true, true, true, false}
-
+	
 	for i := 0; i < len(ips); i++ {
 		actual := IsInternalIP(ips[i])
 		assert.Equal(expected[i], actual)
@@ -99,13 +99,13 @@ func TestGetMacAddrs(t *testing.T) {
 
 func TestEncodeUrl(t *testing.T) {
 	assert := internal.NewAssert(t, "TestEncodeUrl")
-
+	
 	urlAddr := "http://www.lancet.com?a=1&b=[2]"
 	encodedUrl, err := EncodeUrl(urlAddr)
 	if err != nil {
 		t.Fail()
 	}
-
+	
 	expected := "http://www.lancet.com?a=1&b=%5B2%5D"
 	assert.Equal(expected, encodedUrl)
 }
@@ -119,21 +119,21 @@ func TestEncodeUrl(t *testing.T) {
 
 func TestIsPingConnected(t *testing.T) {
 	assert := internal.NewAssert(t, "TestIsPingConnected")
-
+	
 	// in github action env, this will fail
 	// result1 := IsPingConnected("bing.com")
 	// assert.Equal(true, result1)
-
+	
 	result2 := IsPingConnected("www.!@#&&&.com")
 	assert.Equal(false, result2)
 }
 
 func TestTelnetConnected(t *testing.T) {
 	assert := internal.NewAssert(t, "TestTelnetConnected")
-
+	
 	result1 := IsTelnetConnected("bing.com", "80")
 	assert.Equal(true, result1)
-
+	
 	result2 := IsTelnetConnected("www.baidu.com", "123")
 	assert.Equal(false, result2)
 }

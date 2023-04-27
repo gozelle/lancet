@@ -13,8 +13,8 @@ import (
 	"os/exec"
 	"strings"
 	"time"
-
-	"github.com/duke-git/lancet/v2/fileutil"
+	
+	"github.com/gozelle/lancet/fileutil"
 )
 
 // GetInternalIp return internal ipv4.
@@ -31,7 +31,7 @@ func GetInternalIp() string {
 			}
 		}
 	}
-
+	
 	return ""
 }
 
@@ -44,15 +44,15 @@ func GetRequestPublicIp(req *http.Request) string {
 			return ip
 		}
 	}
-
+	
 	if ip = strings.TrimSpace(req.Header.Get("X-Real-Ip")); ip != "" && !IsInternalIP(net.ParseIP(ip)) {
 		return ip
 	}
-
+	
 	if ip, _, _ = net.SplitHostPort(req.RemoteAddr); !IsInternalIP(net.ParseIP(ip)) {
 		return ip
 	}
-
+	
 	return ip
 }
 
@@ -65,18 +65,18 @@ func GetPublicIpInfo() (*PublicIpInfo, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-
+	
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-
+	
 	var ip PublicIpInfo
 	err = json.Unmarshal(body, &ip)
 	if err != nil {
 		return nil, err
 	}
-
+	
 	return &ip, nil
 }
 
@@ -84,12 +84,12 @@ func GetPublicIpInfo() (*PublicIpInfo, error) {
 // Play: https://go.dev/play/p/NUFfcEmukx1
 func GetIps() []string {
 	var ips []string
-
+	
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		return ips
 	}
-
+	
 	for _, addr := range addrs {
 		ipNet, isValid := addr.(*net.IPNet)
 		if isValid && !ipNet.IP.IsLoopback() {
@@ -105,12 +105,12 @@ func GetIps() []string {
 // Play: https://go.dev/play/p/Rq9UUBS_Xp1
 func GetMacAddrs() []string {
 	var macAddrs []string
-
+	
 	nets, err := net.Interfaces()
 	if err != nil {
 		return macAddrs
 	}
-
+	
 	for _, net := range nets {
 		macAddr := net.HardwareAddr.String()
 		if len(macAddr) == 0 {
@@ -118,7 +118,7 @@ func GetMacAddrs() []string {
 		}
 		macAddrs = append(macAddrs, macAddr)
 	}
-
+	
 	return macAddrs
 }
 
@@ -181,9 +181,9 @@ func EncodeUrl(urlStr string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	
 	URL.RawQuery = URL.Query().Encode()
-
+	
 	return URL.String(), nil
 }
 
@@ -192,39 +192,39 @@ func UploadFile(filepath string, server string) (bool, error) {
 	if !fileutil.IsExist(filepath) {
 		return false, errors.New("file not exist")
 	}
-
+	
 	fileInfo, err := os.Stat(filepath)
 	if err != nil {
 		return false, err
 	}
-
+	
 	bodyBuffer := &bytes.Buffer{}
 	writer := multipart.NewWriter(bodyBuffer)
-
+	
 	formFile, err := writer.CreateFormFile("uploadfile", fileInfo.Name())
 	if err != nil {
 		return false, err
 	}
-
+	
 	srcFile, err := os.Open(filepath)
 	if err != nil {
 		return false, err
 	}
 	defer srcFile.Close()
-
+	
 	_, err = io.Copy(formFile, srcFile)
 	if err != nil {
 		return false, err
 	}
-
+	
 	contentType := writer.FormDataContentType()
 	writer.Close()
-
+	
 	_, err = http.Post(server, contentType, bodyBuffer)
 	if err != nil {
 		return false, err
 	}
-
+	
 	return true, nil
 }
 
@@ -236,15 +236,15 @@ func DownloadFile(filepath string, url string) error {
 		return err
 	}
 	defer resp.Body.Close()
-
+	
 	out, err := os.Create(filepath)
 	if err != nil {
 		return err
 	}
 	defer out.Close()
-
+	
 	_, err = io.Copy(out, resp.Body)
-
+	
 	return err
 }
 
@@ -264,12 +264,12 @@ func IsPingConnected(host string) bool {
 func IsTelnetConnected(host string, port string) bool {
 	adder := host + ":" + port
 	conn, err := net.DialTimeout("tcp", adder, 5*time.Second)
-
+	
 	if err != nil {
 		return false
 	}
-
+	
 	defer conn.Close()
-
+	
 	return true
 }

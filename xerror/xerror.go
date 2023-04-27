@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"io"
 	"strings"
-
-	"github.com/duke-git/lancet/v2/random"
+	
+	"github.com/gozelle/lancet/random"
 )
 
 // XError is to handle error related information.
@@ -32,7 +32,7 @@ func New(format string, args ...any) *XError {
 // Wrap creates a new XError and add message.
 func Wrap(cause error, message ...any) *XError {
 	err := newXError()
-
+	
 	if len(message) > 0 {
 		var newMsgs []string
 		for _, m := range message {
@@ -40,9 +40,9 @@ func Wrap(cause error, message ...any) *XError {
 		}
 		err.message = strings.Join(newMsgs, " ")
 	}
-
+	
 	err.cause = cause
-
+	
 	return err
 }
 
@@ -60,7 +60,7 @@ func newXError() *XError {
 	if err != nil {
 		return nil
 	}
-
+	
 	return &XError{
 		id:     id,
 		stack:  callers(),
@@ -72,7 +72,7 @@ func (e *XError) copy(dest *XError) {
 	dest.message = e.message
 	dest.id = e.id
 	dest.cause = e.cause
-
+	
 	for k, v := range e.values {
 		dest.values[k] = v
 	}
@@ -82,13 +82,13 @@ func (e *XError) copy(dest *XError) {
 func (e *XError) Error() string {
 	msg := e.message
 	cause := e.cause
-
+	
 	if cause == nil {
 		return msg
 	}
-
+	
 	msg = fmt.Sprintf("%s: %v", msg, cause.Error())
-
+	
 	return msg
 }
 
@@ -133,13 +133,13 @@ func (e *XError) With(key string, value any) *XError {
 // Is checks if target error is XError and Error.id of two errors are matched.
 func (e *XError) Is(target error) bool {
 	var err *XError
-
+	
 	if errors.As(target, &err) {
 		if e.id != "" && e.id == err.id {
 			return true
 		}
 	}
-
+	
 	return e == target
 }
 
@@ -153,21 +153,21 @@ func (e *XError) Id(id string) *XError {
 // Key and values of wrapped error is overwritten by upper xerror.XError.
 func (e *XError) Values() map[string]any {
 	var values map[string]any
-
+	
 	if cause := e.Unwrap(); cause != nil {
 		if err, ok := cause.(*XError); ok {
 			values = err.Values()
 		}
 	}
-
+	
 	if values == nil {
 		values = make(map[string]any)
 	}
-
+	
 	for key, value := range e.values {
 		values[key] = value
 	}
-
+	
 	return values
 }
 
@@ -188,11 +188,11 @@ func (e *XError) Info() *errInfo {
 		Cause:      e.cause,
 		Values:     make(map[string]any),
 	}
-
+	
 	for k, v := range e.values {
 		errInfo.Values[k] = v
 	}
-
+	
 	return errInfo
 }
 

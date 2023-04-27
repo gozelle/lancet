@@ -10,8 +10,8 @@ import (
 	"os/exec"
 	"runtime"
 	"unicode/utf8"
-
-	"github.com/duke-git/lancet/v2/validator"
+	
+	"github.com/gozelle/lancet/validator"
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
@@ -73,12 +73,12 @@ func CompareOsEnv(key, comparedEnv string) bool {
 func ExecCommand(command string, opts ...Option) (stdout, stderr string, err error) {
 	var out bytes.Buffer
 	var errOut bytes.Buffer
-
+	
 	cmd := exec.Command("/bin/bash", "-c", command)
 	if IsWindows() {
 		cmd = exec.Command("powershell.exe", command)
 	}
-
+	
 	for _, opt := range opts {
 		if opt != nil {
 			opt(cmd)
@@ -86,9 +86,9 @@ func ExecCommand(command string, opts ...Option) (stdout, stderr string, err err
 	}
 	cmd.Stdout = &out
 	cmd.Stderr = &errOut
-
+	
 	err = cmd.Run()
-
+	
 	if err != nil {
 		if utf8.Valid(errOut.Bytes()) {
 			stderr = byteToString(errOut.Bytes(), "UTF8")
@@ -97,20 +97,20 @@ func ExecCommand(command string, opts ...Option) (stdout, stderr string, err err
 		}
 		return
 	}
-
+	
 	data := out.Bytes()
 	if utf8.Valid(data) {
 		stdout = byteToString(data, "UTF8")
 	} else if validator.IsGBK(data) {
 		stdout = byteToString(data, "GBK")
 	}
-
+	
 	return
 }
 
 func byteToString(data []byte, charset string) string {
 	var result string
-
+	
 	switch charset {
 	case "GBK":
 		decodeBytes, _ := simplifiedchinese.GBK.NewDecoder().Bytes(data)
@@ -123,7 +123,7 @@ func byteToString(data []byte, charset string) string {
 	default:
 		result = string(data)
 	}
-
+	
 	return result
 }
 

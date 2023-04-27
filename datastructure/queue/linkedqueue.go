@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-
-	"github.com/duke-git/lancet/v2/datastructure"
+	
+	"github.com/gozelle/lancet/datastructure"
 )
 
 // LinkedQueue implements queue with link list
@@ -24,7 +24,7 @@ func NewLinkedQueue[T any]() *LinkedQueue[T] {
 func (q *LinkedQueue[T]) Data() []T {
 	res := []T{}
 	current := q.head
-
+	
 	for current != nil {
 		res = append(res, current.Value)
 		current = current.Next
@@ -45,7 +45,7 @@ func (q *LinkedQueue[T]) IsEmpty() bool {
 // Enqueue put element into queue
 func (q *LinkedQueue[T]) Enqueue(value T) {
 	newNode := datastructure.NewQueueNode(value)
-
+	
 	if q.IsEmpty() {
 		q.head = newNode
 		q.tail = newNode
@@ -61,11 +61,11 @@ func (q *LinkedQueue[T]) Dequeue() (*T, error) {
 	if q.IsEmpty() {
 		return nil, errors.New("queue is empty")
 	}
-
+	
 	head := q.head
 	q.head = q.head.Next
 	q.length--
-
+	
 	return &head.Value, nil
 }
 

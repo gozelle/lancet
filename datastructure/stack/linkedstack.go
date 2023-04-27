@@ -3,8 +3,8 @@ package datastructure
 import (
 	"errors"
 	"fmt"
-
-	"github.com/duke-git/lancet/v2/datastructure"
+	
+	"github.com/gozelle/lancet/datastructure"
 )
 
 // LinkedStack implements stack with link list
@@ -22,7 +22,7 @@ func NewLinkedStack[T any]() *LinkedStack[T] {
 func (s *LinkedStack[T]) Data() []T {
 	res := []T{}
 	current := s.top
-
+	
 	for current != nil {
 		res = append(res, current.Value)
 		current = current.Next
@@ -50,7 +50,7 @@ func (s *LinkedStack[T]) Push(value T) {
 		newNode.Next = top
 		s.top = newNode
 	}
-
+	
 	s.length++
 }
 
@@ -59,11 +59,11 @@ func (s *LinkedStack[T]) Pop() (*T, error) {
 	if s.IsEmpty() {
 		return nil, errors.New("stack is empty")
 	}
-
+	
 	top := s.top
 	s.top = s.top.Next
 	s.length--
-
+	
 	return &top.Value, nil
 }
 

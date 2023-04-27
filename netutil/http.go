@@ -24,9 +24,9 @@ import (
 	"sort"
 	"strings"
 	"time"
-
-	"github.com/duke-git/lancet/v2/convertor"
-	"github.com/duke-git/lancet/v2/slice"
+	
+	"github.com/gozelle/lancet/convertor"
+	"github.com/gozelle/lancet/slice"
 )
 
 // HttpGet send get http request.
@@ -74,7 +74,7 @@ func ConvertMapToQueryString(param map[string]any) string {
 		keys = append(keys, key)
 	}
 	sort.Strings(keys)
-
+	
 	var build strings.Builder
 	for i, v := range keys {
 		build.WriteString(v)
@@ -134,7 +134,7 @@ func NewHttpClient() *HttpClient {
 		},
 		Config: *defaultHttpClientConfig,
 	}
-
+	
 	return client
 }
 
@@ -143,7 +143,7 @@ func NewHttpClientWithConfig(config *HttpClientConfig) *HttpClient {
 	if config == nil {
 		config = defaultHttpClientConfig
 	}
-
+	
 	client := &HttpClient{
 		Client: &http.Client{
 			Transport: &http.Transport{
@@ -154,11 +154,11 @@ func NewHttpClientWithConfig(config *HttpClientConfig) *HttpClient {
 		},
 		Config: *config,
 	}
-
+	
 	if config.SSLEnabled {
 		client.TLS = config.TLSConfig
 	}
-
+	
 	return client
 }
 
@@ -169,33 +169,33 @@ func (client *HttpClient) SendRequest(request *HttpRequest) (*http.Response, err
 	if err != nil {
 		return nil, err
 	}
-
+	
 	rawUrl := request.RawURL
-
+	
 	req, err := http.NewRequest(request.Method, rawUrl, bytes.NewBuffer(request.Body))
 	if err != nil {
 		return nil, err
 	}
-
+	
 	client.setTLS(rawUrl)
 	client.setHeader(req, request.Headers)
-
+	
 	err = client.setQueryParam(req, rawUrl, request.QueryParams)
 	if err != nil {
 		return nil, err
 	}
-
+	
 	if request.FormData != nil {
 		client.setFormData(req, request.FormData)
 	}
-
+	
 	client.Request = req
-
+	
 	resp, err := client.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-
+	
 	return resp, nil
 }
 
@@ -223,14 +223,14 @@ func (client *HttpClient) setHeader(req *http.Request, headers http.Header) {
 	if headers == nil {
 		headers = make(http.Header)
 	}
-
+	
 	if _, ok := headers["Accept"]; !ok {
 		headers["Accept"] = []string{"*/*"}
 	}
 	if _, ok := headers["Accept-Encoding"]; !ok && client.Config.Compressed {
 		headers["Accept-Encoding"] = []string{"deflate, gzip"}
 	}
-
+	
 	req.Header = headers
 }
 
@@ -262,15 +262,15 @@ func validateRequest(req *HttpRequest) error {
 	if req.RawURL == "" {
 		return errors.New("invalid request url")
 	}
-
+	
 	// common HTTP methods
 	methods := []string{"GET", "POST", "PUT", "DELETE", "PATCH",
 		"HEAD", "CONNECT", "OPTIONS", "TRACE"}
-
+	
 	if !slice.Contain(methods, strings.ToUpper(req.Method)) {
 		return errors.New("invalid request method")
 	}
-
+	
 	return nil
 }
 
@@ -286,6 +286,6 @@ func StructToUrlValues(targetStruct any) (url.Values, error) {
 	for k, v := range s {
 		result.Add(k, fmt.Sprintf("%v", v))
 	}
-
+	
 	return result, nil
 }

@@ -6,8 +6,8 @@ package datastructure
 
 import (
 	"fmt"
-
-	"github.com/duke-git/lancet/v2/lancetconstraints"
+	
+	"github.com/gozelle/lancet/lancetconstraints"
 )
 
 // MaxHeap implements a binary max heap
@@ -31,11 +31,11 @@ func BuildMaxHeap[T any](data []T, comparator lancetconstraints.Comparator) *Max
 		data:       make([]T, 0, len(data)),
 		comparator: comparator,
 	}
-
+	
 	for _, v := range data {
 		heap.Push(v)
 	}
-
+	
 	return heap
 }
 
@@ -60,14 +60,14 @@ func (h *MaxHeap[T]) Pop() (T, bool) {
 	if h.Size() == 0 {
 		return val, false
 	}
-
+	
 	val = h.data[0]
 	l := len(h.data) - 1
-
+	
 	h.data[0] = h.data[l]
 	h.data = h.data[:l]
 	h.heapifyDown(0)
-
+	
 	return val, true
 }
 
@@ -76,7 +76,7 @@ func (h *MaxHeap[T]) heapifyDown(i int) {
 	lastIndex := len(h.data) - 1
 	l, r := leftChildIndex(i), rightChildIndex(i)
 	childToCompare := 0
-
+	
 	for l <= lastIndex {
 		if l == lastIndex {
 			childToCompare = l
@@ -85,7 +85,7 @@ func (h *MaxHeap[T]) heapifyDown(i int) {
 		} else {
 			childToCompare = r
 		}
-
+		
 		if h.comparator.Compare(h.data[i], h.data[childToCompare]) < 0 {
 			h.swap(i, childToCompare)
 			i = childToCompare
@@ -103,7 +103,7 @@ func (h *MaxHeap[T]) Peek() (T, bool) {
 		var val T
 		return val, false
 	}
-
+	
 	return h.data[0], true
 }
 
@@ -123,29 +123,29 @@ func (h *MaxHeap[T]) PrintStructure() {
 	data := h.data
 	length := len(h.data)
 	index := 0
-
+	
 	list := [][]string{}
 	temp := []string{}
 	for index < length {
 		start := powerTwo(level-1) - 1
 		end := start + powerTwo(level-1) - 1
-
+		
 		temp = append(temp, fmt.Sprintf("%v", data[index]))
 		index++
-
+		
 		if index > end || index >= length {
 			list = append(list, temp)
 			temp = []string{}
-
+			
 			if index < length {
 				level++
 			}
 		}
 	}
-
+	
 	lastNum := powerTwo(level - 1)
 	lastLen := lastNum + (lastNum - 1)
-
+	
 	heapTree := make([][]string, level)
 	for i := 0; i < level; i++ {
 		heapTree[i] = make([]string, lastLen)
@@ -153,7 +153,7 @@ func (h *MaxHeap[T]) PrintStructure() {
 			heapTree[i][j] = ""
 		}
 	}
-
+	
 	for k := 0; k < len(list); k++ {
 		vals := list[k]
 		tempLevel := level - k
@@ -164,7 +164,7 @@ func (h *MaxHeap[T]) PrintStructure() {
 			st = st + gap
 		}
 	}
-
+	
 	for m := 0; m < level; m++ {
 		for n := 0; n < lastLen; n++ {
 			val := heapTree[m][n]

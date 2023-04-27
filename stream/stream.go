@@ -8,8 +8,8 @@ package stream
 import (
 	"bytes"
 	"encoding/gob"
-
-	"github.com/duke-git/lancet/v2/slice"
+	
+	"github.com/gozelle/lancet/slice"
 	"golang.org/x/exp/constraints"
 )
 
@@ -61,16 +61,16 @@ func Of[T any](elems ...T) stream[T] {
 // Play: https://go.dev/play/p/rkOWL1yA3j9
 func Generate[T any](generator func() func() (item T, ok bool)) stream[T] {
 	source := make([]T, 0)
-
+	
 	var zeroValue T
 	for next, item, ok := generator(), zeroValue, true; ok; {
-
+		
 		item, ok = next()
 		if ok {
 			source = append(source, item)
 		}
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -84,11 +84,11 @@ func FromSlice[T any](source []T) stream[T] {
 // Play: https://go.dev/play/p/9TZYugGMhXZ
 func FromChannel[T any](source <-chan T) stream[T] {
 	s := make([]T, 0)
-
+	
 	for v := range source {
 		s = append(s, v)
 	}
-
+	
 	return FromSlice(s)
 }
 
@@ -100,14 +100,14 @@ func FromRange[T constraints.Integer | constraints.Float](start, end, step T) st
 	} else if step <= 0 {
 		panic("stream.FromRange: param step should be positive")
 	}
-
+	
 	l := int((end-start)/step) + 1
 	source := make([]T, l)
-
+	
 	for i := 0; i < l; i++ {
 		source[i] = start + (T(i) * step)
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -115,10 +115,10 @@ func FromRange[T constraints.Integer | constraints.Float](start, end, step T) st
 // Play: https://go.dev/play/p/HM4OlYk_OUC
 func Concat[T any](a, b stream[T]) stream[T] {
 	source := make([]T, 0)
-
+	
 	source = append(source, a.source...)
 	source = append(source, b.source...)
-
+	
 	return FromSlice(source)
 }
 
@@ -126,9 +126,9 @@ func Concat[T any](a, b stream[T]) stream[T] {
 // Play: https://go.dev/play/p/eGkOSrm64cB
 func (s stream[T]) Distinct() stream[T] {
 	source := make([]T, 0)
-
+	
 	distinct := map[string]bool{}
-
+	
 	for _, v := range s.source {
 		// todo: performance issue
 		k := hashKey(v)
@@ -137,7 +137,7 @@ func (s stream[T]) Distinct() stream[T] {
 			source = append(source, v)
 		}
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -155,13 +155,13 @@ func hashKey(data any) string {
 // Play: https://go.dev/play/p/MFlSANo-buc
 func (s stream[T]) Filter(predicate func(item T) bool) stream[T] {
 	source := make([]T, 0)
-
+	
 	for _, v := range s.source {
 		if predicate(v) {
 			source = append(source, v)
 		}
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -169,11 +169,11 @@ func (s stream[T]) Filter(predicate func(item T) bool) stream[T] {
 // Play: https://go.dev/play/p/OtNQUImdYko
 func (s stream[T]) Map(mapper func(item T) T) stream[T] {
 	source := make([]T, s.Count())
-
+	
 	for i, v := range s.source {
 		source[i] = mapper(v)
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -183,7 +183,7 @@ func (s stream[T]) Peek(consumer func(item T)) stream[T] {
 	for _, v := range s.source {
 		consumer(v)
 	}
-
+	
 	return s
 }
 
@@ -194,18 +194,18 @@ func (s stream[T]) Skip(n int) stream[T] {
 	if n <= 0 {
 		return s
 	}
-
+	
 	source := make([]T, 0)
 	l := len(s.source)
-
+	
 	if n > l {
 		return FromSlice(source)
 	}
-
+	
 	for i := n; i < l; i++ {
 		source = append(source, s.source[i])
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -215,17 +215,17 @@ func (s stream[T]) Limit(maxSize int) stream[T] {
 	if s.source == nil {
 		return s
 	}
-
+	
 	if maxSize < 0 {
 		return FromSlice([]T{})
 	}
-
+	
 	source := make([]T, 0, maxSize)
-
+	
 	for i := 0; i < len(s.source) && i < maxSize; i++ {
 		source = append(source, s.source[i])
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -237,7 +237,7 @@ func (s stream[T]) AllMatch(predicate func(item T) bool) bool {
 			return false
 		}
 	}
-
+	
 	return true
 }
 
@@ -249,7 +249,7 @@ func (s stream[T]) AnyMatch(predicate func(item T) bool) bool {
 			return true
 		}
 	}
-
+	
 	return false
 }
 
@@ -273,7 +273,7 @@ func (s stream[T]) Reduce(initial T, accumulator func(a, b T) T) T {
 	for _, v := range s.source {
 		initial = accumulator(initial, v)
 	}
-
+	
 	return initial
 }
 
@@ -287,11 +287,11 @@ func (s stream[T]) Count() int {
 // Play: https://go.dev/play/p/9xEf0-6C1e3
 func (s stream[T]) FindFirst() (T, bool) {
 	var result T
-
+	
 	if s.source == nil || len(s.source) == 0 {
 		return result, false
 	}
-
+	
 	return s.source[0], true
 }
 
@@ -300,7 +300,7 @@ func (s stream[T]) FindFirst() (T, bool) {
 func (s stream[T]) Reverse() stream[T] {
 	l := len(s.source)
 	source := make([]T, l)
-
+	
 	for i := 0; i < l; i++ {
 		source[i] = s.source[l-1-i]
 	}
@@ -319,17 +319,17 @@ func (s stream[T]) Range(start, end int) stream[T] {
 	if start >= end {
 		return FromSlice([]T{})
 	}
-
+	
 	source := make([]T, 0)
-
+	
 	if end > len(s.source) {
 		end = len(s.source)
 	}
-
+	
 	for i := start; i < end; i++ {
 		source = append(source, s.source[i])
 	}
-
+	
 	return FromSlice(source)
 }
 
@@ -338,9 +338,9 @@ func (s stream[T]) Range(start, end int) stream[T] {
 func (s stream[T]) Sorted(less func(a, b T) bool) stream[T] {
 	source := []T{}
 	source = append(source, s.source...)
-
+	
 	slice.SortBy(source, less)
-
+	
 	return FromSlice(source)
 }
 
@@ -349,11 +349,11 @@ func (s stream[T]) Sorted(less func(a, b T) bool) stream[T] {
 // Play: https://go.dev/play/p/fm-1KOPtGzn
 func (s stream[T]) Max(less func(a, b T) bool) (T, bool) {
 	var max T
-
+	
 	if len(s.source) == 0 {
 		return max, false
 	}
-
+	
 	for i, v := range s.source {
 		if less(v, max) || i == 0 {
 			max = v
@@ -367,17 +367,17 @@ func (s stream[T]) Max(less func(a, b T) bool) (T, bool) {
 // Play: https://go.dev/play/p/vZfIDgGNRe_0
 func (s stream[T]) Min(less func(a, b T) bool) (T, bool) {
 	var min T
-
+	
 	if len(s.source) == 0 {
 		return min, false
 	}
-
+	
 	for i, v := range s.source {
 		if less(v, min) || i == 0 {
 			min = v
 		}
 	}
-
+	
 	return min, true
 }
 

@@ -2,8 +2,8 @@ package datastructure
 
 import (
 	"errors"
-
-	"github.com/duke-git/lancet/v2/lancetconstraints"
+	
+	"github.com/gozelle/lancet/lancetconstraints"
 )
 
 // PriorityQueue is a priority queue implemented by binary heap tree
@@ -45,7 +45,7 @@ func (q *PriorityQueue[T]) Data() []T {
 	for i := 1; i < q.size+1; i++ {
 		data[i-1] = q.items[i]
 	}
-
+	
 	return data
 }
 
@@ -66,16 +66,16 @@ func (q *PriorityQueue[T]) Dequeue() (T, bool) {
 	if q.IsEmpty() {
 		return val, false
 	}
-
+	
 	max := q.items[1]
-
+	
 	q.swap(1, q.size)
 	q.size--
 	q.sink(1)
-
+	
 	//set zero value for rest values of the queue
 	q.items[q.size+1] = val
-
+	
 	return max, true
 }
 
@@ -89,10 +89,10 @@ func (q *PriorityQueue[T]) swim(index int) {
 
 // sink when parent's key smaller than child's key, exchange parent's key with larger child's key.
 func (q *PriorityQueue[T]) sink(index int) {
-
+	
 	for 2*index <= q.size {
 		j := 2 * index
-
+		
 		// get larger child node index
 		if j < q.size && q.comparator.Compare(q.items[j], q.items[j+1]) < 0 {
 			j++
@@ -101,7 +101,7 @@ func (q *PriorityQueue[T]) sink(index int) {
 		if !(q.comparator.Compare(q.items[index], q.items[j]) < 0) {
 			break
 		}
-
+		
 		q.swap(index, j)
 		index = j
 	}

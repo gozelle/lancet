@@ -6,8 +6,8 @@ package datastructure
 
 import (
 	"reflect"
-
-	"github.com/duke-git/lancet/v2/iterator"
+	
+	"github.com/gozelle/lancet/iterator"
 )
 
 // List is a linear table, implemented with slice.
@@ -118,7 +118,7 @@ func (l *List[T]) InsertAtLast(value T) {
 func (l *List[T]) InsertAt(index int, value T) {
 	data := l.data
 	size := len(data)
-
+	
 	if index < 0 || index > size {
 		return
 	}
@@ -130,10 +130,10 @@ func (l *List[T]) PopFirst() (*T, bool) {
 	if len(l.data) == 0 {
 		return nil, false
 	}
-
+	
 	v := l.data[0]
 	l.DeleteAt(0)
-
+	
 	return &v, true
 }
 
@@ -143,10 +143,10 @@ func (l *List[T]) PopLast() (*T, bool) {
 	if size == 0 {
 		return nil, false
 	}
-
+	
 	v := l.data[size-1]
 	l.DeleteAt(size - 1)
-
+	
 	return &v, true
 }
 
@@ -169,7 +169,7 @@ func (l *List[T]) DeleteAt(index int) {
 func (l *List[T]) DeleteIf(f func(T) bool) int {
 	data := l.data
 	size := len(data)
-
+	
 	var c int
 	for index := 0; index < len(data); index++ {
 		if !f(data[index]) {
@@ -183,7 +183,7 @@ func (l *List[T]) DeleteIf(f func(T) bool) int {
 		}
 		c++
 	}
-
+	
 	if c > 0 {
 		l.data = data
 	}
@@ -194,7 +194,7 @@ func (l *List[T]) DeleteIf(f func(T) bool) int {
 func (l *List[T]) UpdateAt(index int, value T) {
 	data := l.data
 	size := len(data)
-
+	
 	if index < 0 || index >= size {
 		return
 	}
@@ -206,13 +206,13 @@ func (l *List[T]) Equal(other *List[T]) bool {
 	if len(l.data) != len(other.data) {
 		return false
 	}
-
+	
 	for i := 0; i < len(l.data); i++ {
 		if !reflect.DeepEqual(l.data[i], other.data[i]) {
 			return false
 		}
 	}
-
+	
 	return true
 }
 
@@ -230,7 +230,7 @@ func (l *List[T]) Clear() {
 func (l *List[T]) Clone() *List[T] {
 	cl := NewList(make([]T, len(l.data)))
 	copy(cl.data, l.data)
-
+	
 	return cl
 }
 
@@ -238,10 +238,10 @@ func (l *List[T]) Clone() *List[T] {
 func (l *List[T]) Merge(other *List[T]) *List[T] {
 	l1, l2 := len(l.data), len(other.data)
 	ml := NewList(make([]T, l1+l2))
-
+	
 	data := append([]T{}, append(l.data, other.data...)...)
 	ml.data = data
-
+	
 	return ml
 }
 
@@ -275,7 +275,7 @@ func (l *List[T]) Reverse() {
 func (l *List[T]) Unique() {
 	data := l.data
 	size := len(data)
-
+	
 	uniqueData := make([]T, 0)
 	for i := 0; i < size; i++ {
 		value := data[i]
@@ -290,31 +290,31 @@ func (l *List[T]) Unique() {
 			uniqueData = append(uniqueData, value)
 		}
 	}
-
+	
 	l.data = uniqueData
 }
 
 // Union creates a new list contain all element in list l and other, remove duplicate element.
 func (l *List[T]) Union(other *List[T]) *List[T] {
 	result := NewList([]T{})
-
+	
 	result.data = append(result.data, l.data...)
 	result.data = append(result.data, other.data...)
 	result.Unique()
-
+	
 	return result
 }
 
 // Intersection creates a new list whose element both be contained in list l and other.
 func (l *List[T]) Intersection(other *List[T]) *List[T] {
 	result := NewList(make([]T, 0))
-
+	
 	for _, v := range l.data {
 		if other.Contain(v) {
 			result.data = append(result.data, v)
 		}
 	}
-
+	
 	return result
 }
 
@@ -322,36 +322,36 @@ func (l *List[T]) Intersection(other *List[T]) *List[T] {
 // return a list whose element in the original list, not in the given list.
 func (l *List[T]) Difference(other *List[T]) *List[T] {
 	result := NewList(make([]T, 0))
-
+	
 	intersectList := l.Intersection(other)
-
+	
 	for _, v := range l.data {
 		if !intersectList.Contain(v) {
 			result.data = append(result.data, v)
 		}
 	}
-
+	
 	return result
 }
 
 // SymmetricDifference oppoiste operation of intersection function.
 func (l *List[T]) SymmetricDifference(other *List[T]) *List[T] {
 	result := NewList(make([]T, 0))
-
+	
 	intersectList := l.Intersection(other)
-
+	
 	for _, v := range l.data {
 		if !intersectList.Contain(v) {
 			result.data = append(result.data, v)
 		}
 	}
-
+	
 	for _, v := range other.data {
 		if !intersectList.Contain(v) {
 			result.data = append(result.data, v)
 		}
 	}
-
+	
 	return result
 }
 
@@ -386,14 +386,14 @@ func (l *List[T]) batchRemove(list *List[T], complement bool) bool {
 		data = l.data
 		size = len(data)
 	)
-
+	
 	for i := 0; i < size; i++ {
 		if list.Contain(data[i]) == complement {
 			data[w] = data[i]
 			w++
 		}
 	}
-
+	
 	if w != size {
 		l.data = data[:w]
 		return true
@@ -413,6 +413,6 @@ func ListToMap[T any, K comparable, V any](list *List[T], iteratee func(T) (K, V
 		k, v := iteratee(item)
 		result[k] = v
 	}
-
+	
 	return result
 }

@@ -2,13 +2,13 @@ package formatter
 
 import (
 	"testing"
-
-	"github.com/duke-git/lancet/v2/internal"
+	
+	"github.com/gozelle/lancet/internal"
 )
 
 func TestDecimalBytes(t *testing.T) {
 	assert := internal.NewAssert(t, "TestDecimalBytes")
-
+	
 	assert.Equal("1KB", DecimalBytes(1000))
 	assert.Equal("1.024KB", DecimalBytes(1024))
 	assert.Equal("1.2346MB", DecimalBytes(1234567))
@@ -22,7 +22,7 @@ func TestDecimalBytes(t *testing.T) {
 
 func TestBinaryBytes(t *testing.T) {
 	assert := internal.NewAssert(t, "TestBinaryBytes")
-
+	
 	assert.Equal("1KiB", BinaryBytes(1024))
 	assert.Equal("1MiB", BinaryBytes(1024*1024))
 	assert.Equal("1.1774MiB", BinaryBytes(1234567))
@@ -31,7 +31,7 @@ func TestBinaryBytes(t *testing.T) {
 
 func TestParseDecimalBytes(t *testing.T) {
 	assert := internal.NewAssert(t, "TestParseDecimalBytes")
-
+	
 	cases := map[string]uint64{
 		"12":      uint64(12),
 		"12 k":    uint64(12000),
@@ -46,20 +46,20 @@ func TestParseDecimalBytes(t *testing.T) {
 		"12 kB":   uint64(12000),
 		"12.2 KB": uint64(12200),
 	}
-
+	
 	for k, v := range cases {
 		result, err := ParseDecimalBytes(k)
 		assert.Equal(v, result)
 		assert.IsNil(err)
 	}
-
+	
 	_, err := ParseDecimalBytes("12 AB")
 	assert.IsNotNil(err)
 }
 
 func TestParseBinaryBytes(t *testing.T) {
 	assert := internal.NewAssert(t, "TestParseBinaryBytes")
-
+	
 	cases := map[string]uint64{
 		"12":       uint64(12),
 		"12 ki":    uint64(12288),
@@ -75,13 +75,13 @@ func TestParseBinaryBytes(t *testing.T) {
 		"12 kiB":   uint64(12288),
 		"12.2 KiB": uint64(12492),
 	}
-
+	
 	for k, v := range cases {
 		result, err := ParseBinaryBytes(k)
 		assert.Equal(v, result)
 		assert.IsNil(err)
 	}
-
+	
 	_, err := ParseDecimalBytes("12 AB")
 	assert.IsNotNil(err)
 }

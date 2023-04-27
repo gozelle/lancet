@@ -2,9 +2,9 @@ package datastructure
 
 import (
 	"math"
-
-	"github.com/duke-git/lancet/v2/datastructure"
-	"github.com/duke-git/lancet/v2/lancetconstraints"
+	
+	"github.com/gozelle/lancet/datastructure"
+	"github.com/gozelle/lancet/lancetconstraints"
 )
 
 // BSTree is a binary search tree data structure in which each node has at most two children,
@@ -46,7 +46,7 @@ func (t *BSTree[T]) NodeLevel(node *datastructure.TreeNode[T]) int {
 	}
 	left := float64(t.NodeLevel(node.Left))
 	right := float64(t.NodeLevel(node.Right))
-
+	
 	return int(math.Max(left, right)) + 1
 }
 
@@ -85,7 +85,7 @@ func (t *BSTree[T]) HasSubTree(subTree *BSTree[T]) bool {
 func hasSubTree[T any](superTreeRoot, subTreeRoot *datastructure.TreeNode[T],
 	comparator lancetconstraints.Comparator) bool {
 	result := false
-
+	
 	if superTreeRoot != nil && subTreeRoot != nil {
 		if comparator.Compare(superTreeRoot.Value, subTreeRoot.Value) == 0 {
 			result = isSubTree(superTreeRoot, subTreeRoot, comparator)

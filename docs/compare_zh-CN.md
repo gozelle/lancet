@@ -16,7 +16,7 @@ compare包提供几个轻量级的类型比较函数。
 
 ```go
 import (
-    "github.com/duke-git/lancet/v2/condition"
+    "github.com/gozelle/lancet/condition"
 )
 ```
 
@@ -52,7 +52,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -101,7 +101,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -140,7 +140,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -189,7 +189,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -241,7 +241,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -290,7 +290,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {

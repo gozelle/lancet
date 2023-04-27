@@ -3,8 +3,8 @@ package structs
 
 import (
 	"reflect"
-
-	"github.com/duke-git/lancet/v2/pointer"
+	
+	"github.com/gozelle/lancet/pointer"
 )
 
 // defaultTagName is the default tag for struct fields to lookup.
@@ -23,16 +23,16 @@ func New(value any, tagName ...string) *Struct {
 	value = pointer.ExtractPointer(value)
 	v := reflect.ValueOf(value)
 	t := reflect.TypeOf(value)
-
+	
 	tn := defaultTagName
-
+	
 	if len(tagName) > 0 {
 		tn = tagName[0]
 	}
-
+	
 	// if need: can also set defaultTagName to tn across structs package level
 	// defaultTagName = tn
-
+	
 	return &Struct{
 		raw:     value,
 		rtype:   t,
@@ -63,7 +63,7 @@ func (s *Struct) ToMap() (map[string]any, error) {
 	if !s.IsStruct() {
 		return nil, errInvalidStruct(s)
 	}
-
+	
 	result := make(map[string]any)
 	fields := s.Fields()
 	for _, f := range fields {
@@ -75,7 +75,7 @@ func (s *Struct) ToMap() (map[string]any, error) {
 		}
 		result[f.tag.Name] = f.mapValue(f.Value())
 	}
-
+	
 	return result, nil
 }
 

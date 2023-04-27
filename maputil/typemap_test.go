@@ -2,8 +2,8 @@ package maputil
 
 import (
 	"testing"
-
-	"github.com/duke-git/lancet/v2/internal"
+	
+	"github.com/gozelle/lancet/internal"
 )
 
 type (
@@ -13,7 +13,7 @@ type (
 		Phone string  `json:"phone"`
 		Addr  Address `json:"address"`
 	}
-
+	
 	Address struct {
 		Street string `json:"street"`
 		Number int    `json:"number"`
@@ -22,7 +22,7 @@ type (
 
 func TestStructType(t *testing.T) {
 	assert := internal.NewAssert(t, "TestStructType")
-
+	
 	src := map[string]interface{}{
 		"name":  "Nothin",
 		"age":   28,
@@ -32,7 +32,7 @@ func TestStructType(t *testing.T) {
 			"number": 1,
 		},
 	}
-
+	
 	var p Person
 	err := MapTo(src, &p)
 	assert.IsNil(err)
@@ -45,7 +45,7 @@ func TestStructType(t *testing.T) {
 
 func TestBaseType(t *testing.T) {
 	assert := internal.NewAssert(t, "TestBaseType")
-
+	
 	tc := map[string]interface{}{
 		"i32":     -32,
 		"i8":      -8,
@@ -63,7 +63,7 @@ func TestBaseType(t *testing.T) {
 		"str":     "hello mapto",
 		"complex": 1 + 3i,
 	}
-
+	
 	type BaseType struct {
 		I    int        `json:"i"`
 		I8   int8       `json:"i8"`
@@ -81,13 +81,13 @@ func TestBaseType(t *testing.T) {
 		Str  string     `json:"str"`
 		Comp complex128 `json:"complex"`
 	}
-
+	
 	var dist BaseType
 	err := MapTo(tc, &dist)
 	assert.IsNil(err)
-
+	
 	var number float64
-
+	
 	MapTo(tc["i"], &number)
 	assert.EqualValues(-1, number)
 	MapTo(tc["i8"], &number)

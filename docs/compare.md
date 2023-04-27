@@ -16,7 +16,7 @@ Package compare provides a lightweight comparison function on any type.
 
 ```go
 import (
-    "github.com/duke-git/lancet/v2/condition"
+    "github.com/gozelle/lancet/condition"
 )
 ```
 
@@ -52,7 +52,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -101,7 +101,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -140,7 +140,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -189,7 +189,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -241,7 +241,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {
@@ -290,7 +290,7 @@ package main
 
 import (
     "fmt"
-    "github.com/duke-git/lancet/v2/compare"
+    "github.com/gozelle/lancet/compare"
 )
 
 func main() {

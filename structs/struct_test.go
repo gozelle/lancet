@@ -3,19 +3,19 @@ package structs
 import (
 	"reflect"
 	"testing"
-
-	"github.com/duke-git/lancet/v2/internal"
+	
+	"github.com/gozelle/lancet/internal"
 )
 
 func TestStruct_ToMap(t *testing.T) {
 	assert := internal.NewAssert(t, "TestStruct_ToMap")
-
+	
 	t.Run("invalid struct", func(t *testing.T) {
 		m, _ := ToMap(1)
 		var expected map[string]any
 		assert.Equal(expected, m)
 	})
-
+	
 	t.Run("StructToMap", func(_ *testing.T) {
 		type People struct {
 			Name string `json:"name"`
@@ -29,7 +29,7 @@ func TestStruct_ToMap(t *testing.T) {
 		var expected = map[string]any{"name": "test"}
 		assert.Equal(expected, pm)
 	})
-
+	
 	t.Run("StructToMapWithJsonAttr", func(_ *testing.T) {
 		type People struct {
 			Name      string `json:"name,omitempty"` // json tag with attribute
@@ -49,7 +49,7 @@ func TestStruct_ToMap(t *testing.T) {
 		p1m, _ := ToMap(p1)
 		var expect1 = map[string]any{"name": "AAA", "phone": "1111", "is_working": false}
 		assert.Equal(expect1, p1m)
-
+		
 		p2 := People{
 			Name:      "",
 			Phone:     "2222",
@@ -66,21 +66,21 @@ func TestStruct_ToMap(t *testing.T) {
 
 func TestStruct_Fields(t *testing.T) {
 	assert := internal.NewAssert(t, "TestStruct_Fields")
-
+	
 	type Parent struct {
 		A string         `json:"a"`
 		B int            `json:"b"`
 		C []string       `json:"c"`
 		D map[string]any `json:"d"`
 	}
-
+	
 	p1 := &Parent{
 		A: "1",
 		B: 11,
 		C: []string{"11", "22"},
 		D: map[string]any{"d1": 1, "d2": 2},
 	}
-
+	
 	s := New(p1)
 	fields := s.Fields()
 	assert.Equal(4, len(fields))
@@ -92,21 +92,21 @@ func TestStruct_Fields(t *testing.T) {
 
 func TestStruct_Field(t *testing.T) {
 	assert := internal.NewAssert(t, "TestStruct_Field")
-
+	
 	type Parent struct {
 		A string         `json:"a"`
 		B int            `json:"b"`
 		C []string       `json:"c"`
 		D map[string]any `json:"d"`
 	}
-
+	
 	p1 := &Parent{
 		A: "1",
 		B: 11,
 		C: []string{"11", "22"},
 		D: map[string]any{"d1": 1, "d2": 2},
 	}
-
+	
 	s := New(p1)
 	a, ok := s.Field("A")
 	assert.Equal(true, ok)
@@ -119,14 +119,14 @@ func TestStruct_Field(t *testing.T) {
 
 func TestStruct_IsStruct(t *testing.T) {
 	assert := internal.NewAssert(t, "TestStruct_Field")
-
+	
 	type Test1 struct{}
 	t1 := &Test1{}
 	t2 := 1
-
+	
 	s1 := New(t1)
 	s2 := New(t2)
-
+	
 	assert.Equal(true, s1.IsStruct())
 	assert.Equal(false, s2.IsStruct())
 }

@@ -3,7 +3,7 @@
 
 package algorithm
 
-import "github.com/duke-git/lancet/v2/lancetconstraints"
+import "github.com/gozelle/lancet/lancetconstraints"
 
 // BubbleSort applys the bubble sort algorithm to sort the collection, will change the original collection data.
 // Play: https://go.dev/play/p/GNdv7Jg2Taj
@@ -51,12 +51,12 @@ func SelectionSort[T any](slice []T, comparator lancetconstraints.Comparator) {
 // Play: https://go.dev/play/p/3ibkszpJEu3
 func ShellSort[T any](slice []T, comparator lancetconstraints.Comparator) {
 	size := len(slice)
-
+	
 	gap := 1
 	for gap < size/3 {
 		gap = 3*gap + 1
 	}
-
+	
 	for gap >= 1 {
 		for i := gap; i < size; i++ {
 			for j := i; j >= gap && comparator.Compare(slice[j], slice[j-gap]) == -1; j -= gap {
@@ -91,9 +91,9 @@ func partition[T any](slice []T, lowIndex, highIndex int, comparator lancetconst
 			i++
 		}
 	}
-
+	
 	swap(slice, i, highIndex)
-
+	
 	return i
 }
 
@@ -101,7 +101,7 @@ func partition[T any](slice []T, lowIndex, highIndex int, comparator lancetconst
 // Play: https://go.dev/play/p/u6Iwa1VZS_f
 func HeapSort[T any](slice []T, comparator lancetconstraints.Comparator) {
 	size := len(slice)
-
+	
 	for i := size/2 - 1; i >= 0; i-- {
 		sift(slice, i, size-1, comparator)
 	}
@@ -114,7 +114,7 @@ func HeapSort[T any](slice []T, comparator lancetconstraints.Comparator) {
 func sift[T any](slice []T, lowIndex, highIndex int, comparator lancetconstraints.Comparator) {
 	i := lowIndex
 	j := 2*i + 1
-
+	
 	temp := slice[i]
 	for j <= highIndex {
 		if j < highIndex && comparator.Compare(slice[j], slice[j+1]) == -1 { //slice[j] < slice[j+1]
@@ -150,7 +150,7 @@ func merge[T any](slice []T, lowIndex, midIndex, highIndex int, comparator lance
 	i := lowIndex
 	j := midIndex + 1
 	temp := []T{}
-
+	
 	for i <= midIndex && j <= highIndex {
 		//slice[i] < slice[j]
 		if comparator.Compare(slice[i], slice[j]) == -1 {
@@ -161,13 +161,13 @@ func merge[T any](slice []T, lowIndex, midIndex, highIndex int, comparator lance
 			j++
 		}
 	}
-
+	
 	if i <= midIndex {
 		temp = append(temp, slice[i:midIndex+1]...)
 	} else {
 		temp = append(temp, slice[j:highIndex+1]...)
 	}
-
+	
 	for k := 0; k < len(temp); k++ {
 		slice[lowIndex+k] = temp[k]
 	}
@@ -178,7 +178,7 @@ func merge[T any](slice []T, lowIndex, midIndex, highIndex int, comparator lance
 func CountSort[T any](slice []T, comparator lancetconstraints.Comparator) []T {
 	size := len(slice)
 	out := make([]T, size)
-
+	
 	for i := 0; i < size; i++ {
 		count := 0
 		for j := 0; j < size; j++ {
@@ -189,7 +189,7 @@ func CountSort[T any](slice []T, comparator lancetconstraints.Comparator) []T {
 		}
 		out[count] = slice[i]
 	}
-
+	
 	return out
 }
 

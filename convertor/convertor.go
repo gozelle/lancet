@@ -15,8 +15,8 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
-
-	"github.com/duke-git/lancet/v2/structs"
+	
+	"github.com/gozelle/lancet/structs"
 )
 
 // ToBool convert string to boolean.
@@ -29,7 +29,7 @@ func ToBool(s string) (bool, error) {
 // Play: https://go.dev/play/p/fAMXYFDvOvr
 func ToBytes(value any) ([]byte, error) {
 	v := reflect.ValueOf(value)
-
+	
 	switch value.(type) {
 	case int, int8, int16, int32, int64:
 		number := v.Int()
@@ -84,14 +84,14 @@ func ToChar(s string) []string {
 // Play: https://go.dev/play/p/hOx_oYZbAnL
 func ToChannel[T any](array []T) <-chan T {
 	ch := make(chan T)
-
+	
 	go func() {
 		for _, item := range array {
 			ch <- item
 		}
 		close(ch)
 	}()
-
+	
 	return ch
 }
 
@@ -103,7 +103,7 @@ func ToString(value any) string {
 	if value == nil {
 		return ""
 	}
-
+	
 	switch val := value.(type) {
 	case float32:
 		return strconv.FormatFloat(float64(val), 'f', -1, 32)
@@ -139,7 +139,7 @@ func ToString(value any) string {
 			return ""
 		}
 		return string(b)
-
+		
 		// todo: maybe we should't supprt other type conversion
 		// v := reflect.ValueOf(value)
 		// log.Panicf("Unsupported data type: %s ", v.String())
@@ -154,7 +154,7 @@ func ToJson(value any) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	
 	return string(result), nil
 }
 
@@ -162,7 +162,7 @@ func ToJson(value any) (string, error) {
 // Play: https://go.dev/play/p/4YTmPCibqHJ
 func ToFloat(value any) (float64, error) {
 	v := reflect.ValueOf(value)
-
+	
 	result := 0.0
 	err := fmt.Errorf("ToInt: unvalid interface type %T", value)
 	switch value.(type) {
@@ -190,7 +190,7 @@ func ToFloat(value any) (float64, error) {
 // Play: https://go.dev/play/p/9_h9vIt-QZ_b
 func ToInt(value any) (int64, error) {
 	v := reflect.ValueOf(value)
-
+	
 	var result int64
 	err := fmt.Errorf("ToInt: invalid value type %T", value)
 	switch value.(type) {
@@ -228,7 +228,7 @@ func ToMap[T any, K comparable, V any](array []T, iteratee func(T) (K, V)) map[K
 		k, v := iteratee(item)
 		result[k] = v
 	}
-
+	
 	return result
 }
 
@@ -243,11 +243,11 @@ func StructToMap(value any) (map[string]any, error) {
 // Play: https://go.dev/play/p/dmX4Ix5V6Wl
 func MapToSlice[T any, K comparable, V any](aMap map[K]V, iteratee func(K, V) T) []T {
 	result := make([]T, 0, len(aMap))
-
+	
 	for k, v := range aMap {
 		result = append(result, iteratee(k, v))
 	}
-
+	
 	return result
 }
 
@@ -269,7 +269,7 @@ func ColorRGBToHex(red, green, blue int) string {
 	r := strconv.FormatInt(int64(red), 16)
 	g := strconv.FormatInt(int64(green), 16)
 	b := strconv.FormatInt(int64(blue), 16)
-
+	
 	if len(r) == 1 {
 		r = "0" + r
 	}
@@ -279,7 +279,7 @@ func ColorRGBToHex(red, green, blue int) string {
 	if len(b) == 1 {
 		b = "0" + b
 	}
-
+	
 	return "#" + r + g + b
 }
 
@@ -315,7 +315,7 @@ func DeepClone[T any](src T) T {
 		var zeroValue T
 		return zeroValue
 	}
-
+	
 	return result.Interface().(T)
 }
 
@@ -324,18 +324,18 @@ func DeepClone[T any](src T) T {
 // Play: todo
 func CopyProperties[T, U any](dst T, src U) error {
 	dstType, srcType := reflect.TypeOf(dst), reflect.TypeOf(src)
-
+	
 	if dstType.Kind() != reflect.Ptr || dstType.Elem().Kind() != reflect.Struct {
 		return errors.New("CopyProperties: parameter dst should be struct pointer")
 	}
-
+	
 	if srcType.Kind() == reflect.Ptr {
 		srcType = srcType.Elem()
 	}
 	if srcType.Kind() != reflect.Struct {
 		return errors.New("CopyProperties: parameter src should be a struct or struct pointer")
 	}
-
+	
 	bytes, err := json.Marshal(src)
 	if err != nil {
 		return fmt.Errorf("CopyProperties: unable to marshal src: %s", err)
@@ -344,6 +344,6 @@ func CopyProperties[T, U any](dst T, src U) error {
 	if err != nil {
 		return fmt.Errorf("CopyProperties: unable to unmarshal into dst: %s", err)
 	}
-
+	
 	return nil
 }
